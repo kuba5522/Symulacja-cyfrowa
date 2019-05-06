@@ -12,7 +12,8 @@ namespace Restauracja
                 Param.QueueTable.Add(Customer);
             else
                 Param.QueueBuffet.Enqueue(Customer);
-            var Group = new NewGroup(new Time().GaussianDistribution(300, 200));
+            Console.WriteLine("Zaplanowanie pojawienia się następnej grupy");
+            var Group = new NewGroup(new Time().GaussianDistribution(1500, 200));
             Param.EventList.Add(Group);
 
         }

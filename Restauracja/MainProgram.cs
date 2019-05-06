@@ -14,7 +14,7 @@ namespace Restauracja
             Param.EventList.Add(NewGroupArrival);
             Console.WriteLine("Tryb pracy krokowy(1) czy ciągły(2)? ");
             var StepMode = int.Parse(Console.ReadLine()) == 1;
-            while (Param.Clock < 200000)
+            while (Param.Clock < 10000000)
             {
                 Param.Clock = Param.EventList.Min(r => r.ExecuteTime);
                 Console.WriteLine("Clock: "+Param.Clock);                         //B

@@ -24,7 +24,7 @@ namespace Restauracja
                 }
             }
             Waiter.Customer = null;
-            Console.WriteLine("Zakończenie spozyswania posiłku");
+            Console.WriteLine("Zakończenie spozyswania posiłku, zwolnienie stolika");
         }
     }
 }

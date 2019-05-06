@@ -19,7 +19,7 @@ namespace Restauracja
         public virtual void Executing()
         {
             Execute();
-            Console.WriteLine("Current time: "+StartTime);
+            //Console.WriteLine("Current time: "+StartTime);
             //tu coś jeszcze będzie
         }
     }
