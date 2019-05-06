@@ -16,7 +16,7 @@ namespace Restauracja
             Param.EventList.Add(Group);
 
         }
-        public NewGroup(int executeTime) : base(Param.Clock, executeTime)
+        public NewGroup(int executeTime=0) : base(Param.Clock, executeTime)
         {
 
             ExecuteTime = executeTime+Param.Clock;
