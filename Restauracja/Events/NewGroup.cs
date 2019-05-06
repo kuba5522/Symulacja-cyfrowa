@@ -12,11 +12,11 @@ namespace Restauracja
                 Param.QueueTable.Add(Customer);
             else
                 Param.QueueBuffet.Enqueue(Customer);
-            var Group = new NewGroup(new Time().GaussianDistribution(200, 100));
+            var Group = new NewGroup(new Time().GaussianDistribution(300, 200));
             Param.EventList.Add(Group);
 
         }
-        public NewGroup(int executeTime=0) : base(Param.Clock, executeTime)
+        public NewGroup(int executeTime) : base(Param.Clock, executeTime)
         {
 
             ExecuteTime = executeTime+Param.Clock;

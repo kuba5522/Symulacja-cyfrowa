@@ -11,17 +11,16 @@ namespace Restauracja
 
         private static bool GroupAssignmentToTables()
         {
-            if (!Menager.Free) return false;
+            if (Menager.Customer!=null) return false;
             foreach (var Customer in QueueTable)
             {
                 foreach (var Table in Tables)
                 {
-                    if ((!Table.Free) || (Table.NumberOfSeats < Customer.GroupSize)) continue;
-                    Menager.Free = false;
-                    Table.Free = false;
+                    if ((Table.Customer!=null) || (Table.NumberOfSeats < Customer.GroupSize)) continue;
+                    Table.Customer = Customer;
                     Menager.Customer = Customer;
                     Menager.Customer.Seats = Table.NumberOfSeats;
-                    var Obj = new MenagerExecute(40, Customer);
+                    var Obj = new MenagerExecute(40, Customer, Table);
                     EventList.Add(Obj);
                     QueueTable.RemoveAll(x => x.Id == Customer.Id);
                     Console.WriteLine("Przydzielenie grupy do stolika");

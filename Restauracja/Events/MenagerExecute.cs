@@ -9,15 +9,17 @@ namespace Restauracja
     public class MenagerExecute:Event
     {
         private readonly Customer Customer;
-        public MenagerExecute(int executeTime, Customer customer) : base(Param.Clock, executeTime)
+        private readonly Table Table;
+        public MenagerExecute(int executeTime, Customer customer, Table table) : base(Param.Clock, executeTime)
         {
+            Table = table;
             ExecuteTime = executeTime+Param.Clock;
             Customer = customer;
         }
 
         public override void Execute()
         {
-            Param.Menager.Free = true;
+            Table.Customer = Customer;
             Param.QueueWaiter.Enqueue(Customer);
             Param.Menager.Customer = null;
             Console.WriteLine("Zakonczenie prowadzenia przez menagera");

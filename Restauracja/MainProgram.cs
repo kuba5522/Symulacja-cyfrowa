@@ -10,7 +10,7 @@ namespace Restauracja
         {
             bool x;
             Param.Initialization();
-            var NewGroupArrival = new NewGroup();              //A
+            var NewGroupArrival = new NewGroup(0);              //A
             Param.EventList.Add(NewGroupArrival);
             Console.WriteLine("Tryb pracy krokowy(1) czy ciągły(2)? ");
             var StepMode = int.Parse(Console.ReadLine()) == 1;

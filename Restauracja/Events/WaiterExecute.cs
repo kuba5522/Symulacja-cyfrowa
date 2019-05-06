@@ -24,6 +24,7 @@ namespace Restauracja
                 Waiter.Customer.Meal = true;
                 Param.QueueWaiter.Enqueue(Waiter.Customer);
                 Waiter.Customer = null;
+
             }
             Console.WriteLine("Zakonczenie obsługi kelnera");
         }

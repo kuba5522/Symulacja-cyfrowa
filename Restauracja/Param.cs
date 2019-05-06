@@ -72,7 +72,7 @@ namespace Restauracja
             int p = 0;
             foreach (var T in Tables)
             {
-                if (T.Free == false)
+                if (T.Customer != null)
                 {
                     if (T.NumberOfSeats == 2)
                         x++;

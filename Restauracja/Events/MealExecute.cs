@@ -17,9 +17,9 @@ namespace Restauracja
             Param.QueueCashier.Enqueue(Waiter.Customer);
             foreach (var Table in Param.Tables)
             {
-                if (Table.Free == false && Table.NumberOfSeats == Waiter.Customer.Seats)
+                if (Table.Customer != null && Table.NumberOfSeats == Waiter.Customer.Seats)
                 {
-                    Table.Free = true;
+                    Table.Customer = null;
                     break;
                 }
             }
