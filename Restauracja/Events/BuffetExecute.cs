@@ -1,19 +1,22 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Restauracja
 {
     internal class BuffetExecute:Event
     {
         private readonly Buffet Buffet;
-        public BuffetExecute(int executeTime, Buffet buffet) : base(Param.Clock, executeTime)
+        private readonly Queue<Customer> QueueCashier;
+        public BuffetExecute(int executeTime, Buffet buffet, Queue<Customer> queueCashier, int clock) : base(clock, executeTime)
         {
             Buffet = buffet;
-            ExecuteTime = executeTime + Param.Clock;
+            QueueCashier = queueCashier;
+            ExecuteTime = executeTime + clock;
         }
 
         public override void Execute()
         {
-            Param.QueueCashier.Enqueue(Buffet.Customer);
+            QueueCashier.Enqueue(Buffet.Customer);
             Buffet.Customer = null;
             Console.WriteLine("Zaknończneinie pobytu w bufecie");
         }

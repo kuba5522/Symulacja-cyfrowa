@@ -3,24 +3,31 @@ using System.Collections.Generic;
 
 namespace Restauracja
 {
-    public class NewGroup : Event
+    internal class NewGroup : Event
     {
+        private Customer Customer;
+        private readonly List<Customer> QueueTable;
+        private readonly Queue<Customer> QueueBuffet;
+        private readonly List<Event> Events;
+
         public override void Execute()
         {
-            var Customer = new Customer();
+            Customer = new Customer();
             if (Customer.Choice)
-                Param.QueueTable.Add(Customer);
+                QueueTable.Add(Customer);
             else
-                Param.QueueBuffet.Enqueue(Customer);
+                QueueBuffet.Enqueue(Customer);
             Console.WriteLine("Zaplanowanie pojawienia się następnej grupy");
-            var Group = new NewGroup(new Time().GaussianDistribution(1500, 200));
-            Param.EventList.Add(Group);
+            var Group = new NewGroup(new Time().GaussianDistribution(10000, 200), QueueTable, QueueBuffet, Events, Param.Clock);
+            Events.Add(Group);
 
         }
-        public NewGroup(int executeTime) : base(Param.Clock, executeTime)
+        public NewGroup(int executeTime, List<Customer> queueTable, Queue<Customer> queueBuffet, List<Event> events, int clock) : base(clock, executeTime)
         {
-
-            ExecuteTime = executeTime+Param.Clock;
+            QueueTable = queueTable;
+            QueueBuffet = queueBuffet;
+            Events = events;
+            ExecuteTime = executeTime+clock;
         }
 
     }

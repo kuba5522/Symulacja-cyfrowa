@@ -20,7 +20,7 @@ namespace Restauracja
                     Table.Customer = Customer;
                     Menager.Customer = Customer;
                     Menager.Customer.Seats = Table.NumberOfSeats;
-                    var Obj = new MenagerExecute(40, Customer, Table);
+                    var Obj = new ManagerExecute(40, Customer, Table, QueueWaiter, Menager, Clock);
                     EventList.Add(Obj);
                     QueueTable.RemoveAll(x => x.Id == Customer.Id);
                     Console.WriteLine("Przydzielenie grupy do stolika");
@@ -37,7 +37,7 @@ namespace Restauracja
             {
                 if (BuffetObj.Customer != null) continue;
                 BuffetObj.Customer = QueueBuffet.Dequeue();
-                var Obj = new BuffetExecute(new Time().GaussianDistribution(2900, 80), BuffetObj);
+                var Obj = new BuffetExecute(new Time().GaussianDistribution(2900, 80), BuffetObj, QueueCashier, Clock);
                 EventList.Add(Obj);
                 Console.WriteLine("Przydzielenie grupy do bufetu");
                 return true;
@@ -56,8 +56,8 @@ namespace Restauracja
                     Waiter.Customer = QueueWaiter.Dequeue();
                     Console.WriteLine("Przydzielenie grupy do kelnera");
                     var Obj = Waiter.Customer.Meal == false
-                        ? new WaiterExecute(new Time().ExponentialDistribution(370), Waiter)
-                        : new WaiterExecute(new Time().ExponentialDistribution(2000), Waiter);
+                        ? new WaiterExecute(new Time().ExponentialDistribution(370), Waiter, QueueWaiter, QueueCashier, Tables, EventList, Clock)
+                        : new WaiterExecute(new Time().ExponentialDistribution(2000), Waiter, QueueWaiter, QueueCashier, Tables, EventList, Clock);
                     EventList.Add(Obj);
                     return true;
                 }
@@ -73,7 +73,7 @@ namespace Restauracja
                 if (Cashier.Customer != null) continue;
                 Console.WriteLine("Przydzielenie grupy do kasjera");
                 Cashier.Customer = QueueCashier.Dequeue();
-                var Obj = new CashierExecute(new Time().ExponentialDistribution(220), Cashier);
+                var Obj = new CashierExecute(new Time().ExponentialDistribution(220), Cashier, Clock);
                 EventList.Add(Obj);
                 return true;
             }

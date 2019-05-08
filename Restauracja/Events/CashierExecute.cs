@@ -4,11 +4,11 @@ namespace Restauracja
 {
     internal class CashierExecute:Event
     {
-        private Cashier Cashier;
-        public CashierExecute(int executeTime, Cashier cashier) : base(Param.Clock, executeTime)
+        private readonly Cashier Cashier;
+        public CashierExecute(int executeTime, Cashier cashier, int clock) : base(clock, executeTime)
         {
             Cashier = cashier;
-            ExecuteTime = executeTime + Param.Clock;
+            ExecuteTime = executeTime + clock;
         }
 
         public override void Execute()
