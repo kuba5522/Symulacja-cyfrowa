@@ -4,10 +4,10 @@ namespace Restauracja
     public class Customer
     {
         private static readonly Random Random = new Random();
-        private const double Probability1 = 0.11;
-        private const double Probability2 = 0.33;
-        private const double Probability3 = 0.33;
-        private const double Probability4 = 0.23;
+        private const double Probability1 = 0.10;
+        private const double Probability2 = 0.30;
+        private const double Probability3 = 0.35;
+        private const double Probability4 = 0.25;
         public Customer()
         {
             GroupSize = QuantityOfGroup();
@@ -28,7 +28,7 @@ namespace Restauracja
         public Guid Id{get;}
         public bool Choice { get; set; }
         public bool Meal { get; set; }
-        public int GroupSize { get; set; }
+        public int GroupSize { get;}
         public int Seats { set; get; }
     }
 }

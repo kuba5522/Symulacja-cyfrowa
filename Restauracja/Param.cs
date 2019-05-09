@@ -13,8 +13,8 @@ namespace Restauracja
         private const int NumberOfTables = N2 + N3 + N4;
         private const int CapacityBuffet = 20;
         private const int NumberOfCashiers = 6;
-        private const int NumberOfWaiters = 13;
-
+        private const int NumberOfWaiters = 6;
+        public static int NumberOfGroups { get; set; }
 
         public static Manager Menager { get; set; } = new Manager();
 
@@ -24,6 +24,7 @@ namespace Restauracja
         public static List<Buffet> Buffet { get; set; } = new List<Buffet>();
 
         public static List<Event> EventList = new List<Event>();
+        public static List<Event> PastEventList = new List<Event>();
 
 
         public static List<Customer> QueueTable { get; set; } = new List<Customer>();
@@ -39,6 +40,7 @@ namespace Restauracja
             AddToList(Cashiers, NumberOfCashiers);
             AddToList(Buffet, CapacityBuffet);
             AllocationOfSeatsToTables(Tables, N2, N3, N4);
+            NumberOfGroups = 0;
         }
 
         private static void AddToList<T>(ICollection<T> objects, int number=1) where T : new()
@@ -84,8 +86,8 @@ namespace Restauracja
             }
             foreach(var T in Buffet)
             {
-                if (T.Customer != null)
-                    n++;
+                if (T.NumberOfBusyPlace > 0)
+                    n+=T.NumberOfBusyPlace;
             }
             foreach (var T in Waiters)
             {

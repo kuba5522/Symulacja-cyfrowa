@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Media.Animation;
 
 namespace Restauracja
 {
@@ -9,16 +10,18 @@ namespace Restauracja
         private readonly List<Customer> QueueTable;
         private readonly Queue<Customer> QueueBuffet;
         private readonly List<Event> Events;
+        
 
         public override void Execute()
         {
             Customer = new Customer();
+            Param.NumberOfGroups++;
             if (Customer.Choice)
                 QueueTable.Add(Customer);
             else
                 QueueBuffet.Enqueue(Customer);
             Console.WriteLine("Zaplanowanie pojawienia się następnej grupy");
-            var Group = new NewGroup(new Time().GaussianDistribution(10000, 200), QueueTable, QueueBuffet, Events, Param.Clock);
+            var Group = new NewGroup(new Time().GaussianDistribution(215, 30), QueueTable, QueueBuffet, Events, Param.Clock);
             Events.Add(Group);
 
         }

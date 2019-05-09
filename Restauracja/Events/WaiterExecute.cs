@@ -9,7 +9,7 @@ namespace Restauracja
         private readonly Waiter Waiter;
         private readonly Queue<Customer> QueueWaiter;
         private readonly List<Event> Events;
-        private readonly Queue<Customer> QueueCashier;
+        private readonly Queue<Customer> QueueCashier; 
         private readonly List<Table> Tables;
 
         public WaiterExecute(int executeTime, Waiter waiter, Queue<Customer> queueWaiter, Queue<Customer> queueCashier, List<Table> tables, List<Event> events, int clock) : base(clock, executeTime)

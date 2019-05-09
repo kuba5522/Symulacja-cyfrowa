@@ -52,6 +52,10 @@
     <Reference Include="HiddenWatermark, Version=0.8.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\HiddenWatermark.0.8.1\lib\net40\HiddenWatermark.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <HintPath>..\packages\Microsoft.Office.Interop.Excel.12.0.4518.1014\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -70,6 +74,7 @@
     <Compile Include="Events\NewGroup.cs" />
     <Compile Include="Events\Time.cs" />
     <Compile Include="Events\WaiterExecute.cs" />
+    <Compile Include="Excel.cs" />
     <Compile Include="Objects\Buffet.cs" />
     <Compile Include="Events\Event.cs" />
     <Compile Include="Events\ConditionalEvents.cs" />

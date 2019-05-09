@@ -8,35 +8,52 @@ namespace Restauracja
     {
         public static void Main()
         {
-            bool x;
+            /////////////Parametry symulacji/////////////
+            const int numberOfSimulations = 1;
+            const int numberOfCustomerReceptions = 2000;
+            const bool stepMode = false;
+            const bool toExcel = false;
+            const bool includeInitialPhase = true;
+            /////////////////////////////////////////////
+            var k = 1;
             Param.Initialization();
+            var Excel = new Excel(AppDomain.CurrentDomain.BaseDirectory + "wynik.xlsx", 1);
             var NewGroupArrival = new NewGroup(0,Param.QueueTable, Param.QueueBuffet, Param.EventList, Param.Clock);              //A
             Param.EventList.Add(NewGroupArrival);
-            Console.WriteLine("Tryb pracy krokowy(1) czy ciągły(2)? ");
-            var StepMode = int.Parse(Console.ReadLine()) == 1;
-            while (Param.Clock < 10000000)
+            for (var i = 0; i < numberOfSimulations; i++)
             {
-                Param.Clock = Param.EventList.Min(r => r.ExecuteTime);
-                Console.WriteLine("Clock: "+Param.Clock);                         //B
-                Param.EventList.Where(time => time.ExecuteTime.Equals(Param.Clock)).ToList().ForEach(obj => obj.Executing());
-                Param.EventList.RemoveAll(time => time.ExecuteTime == Param.Clock);
-                do
+                while (Param.NumberOfGroups <= numberOfCustomerReceptions)
                 {
-                    x = ConditionalEvents.ExecuteConditionalEvents();                   //C
-                } while (x);
-                //wyświetlanie
-                Console.WriteLine();
-                Param.ShowCustomersInQueues();
-                Param.ShowObjInLists();
-                Console.WriteLine("\nLiczba evbentow czasowych: " + Param.EventList.Count);
-                foreach (var Event in Param.EventList)
-                {
-                    Console.Write("|"+Event.ExecuteTime + "| ");            
+                    Param.Clock = Param.EventList.Min(r => r.ExecuteTime);                                                                       //B
+                    Param.EventList.Where(time => time.ExecuteTime.Equals(Param.Clock)).ToList()
+                        .ForEach(obj => obj.Executing());
+                    Param.EventList.RemoveAll(time => time.ExecuteTime == Param.Clock);
+                    bool x;
+                    do
+                    {
+                        x = ConditionalEvents.ExecuteConditionalEvents();                                                                     //C
+                    } while (x);
+
+                    if (!includeInitialPhase && numberOfCustomerReceptions<50) continue;                //wyznaczone doświadczalnie
+                    //wyświetlanie////////////////////////////////////
+                    Console.WriteLine();
+                    Param.ShowCustomersInQueues();
+                    Param.ShowObjInLists();
+                    Console.WriteLine("\nLiczba evbentow czasowych: " + Param.EventList.Count);
+                    foreach (var Event in Param.EventList)
+                    {
+                        Console.Write("|" + Event.ExecuteTime + "| ");
+                    }
+
+                    Console.WriteLine();
+                    Console.WriteLine("____________________________________________________________________");
+                    if (stepMode)
+                        Console.ReadLine();
+                    if (toExcel)
+                        Excel.WriteToCell(k++, 1, Param.QueueBuffet.Count.ToString());
                 }
-                Console.WriteLine();
-                Console.WriteLine("____________________________________________________________________");
-                if (StepMode == true) Console.ReadLine();
             }
+            Excel.Close();
         }
     }
 }
