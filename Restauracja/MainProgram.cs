@@ -17,11 +17,11 @@ namespace Restauracja
             /////////////////////////////////////////////
             var k = 1;
             Param.Initialization();
-            var Excel = new Excel(AppDomain.CurrentDomain.BaseDirectory + "wynik.xlsx", 1);
             var NewGroupArrival = new NewGroup(0,Param.QueueTable, Param.QueueBuffet, Param.EventList, Param.Clock);              //A
             Param.EventList.Add(NewGroupArrival);
             for (var i = 0; i < numberOfSimulations; i++)
             {
+                var Excel = new Excel(AppDomain.CurrentDomain.BaseDirectory + "wynik.xlsx", i+1);
                 while (Param.NumberOfGroups <= numberOfCustomerReceptions)
                 {
                     Param.Clock = Param.EventList.Min(r => r.ExecuteTime);                                                                       //B
@@ -52,8 +52,8 @@ namespace Restauracja
                     if (toExcel)
                         Excel.WriteToCell(k++, 1, Param.QueueBuffet.Count.ToString());
                 }
+                Excel.Close();
             }
-            Excel.Close();
         }
     }
 }

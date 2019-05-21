@@ -20,5 +20,11 @@ namespace Restauracja
         {
             return Convert.ToInt32(-mean * Math.Log((1-Rand.NextDouble()), Math.E));
         }
+
+        public int UniformDistribution(int a, int b)
+        {
+            double x = Rand.NextDouble();
+            return Convert.ToInt32(b * x + (1 - x) * a);
+        }
     }
 }

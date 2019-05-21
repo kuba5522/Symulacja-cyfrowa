@@ -64,8 +64,8 @@ namespace Restauracja
                     Waiter.Customer = QueueWaiter.Dequeue();
                     Console.WriteLine("Przydzielenie grupy do kelnera");
                     var Obj = Waiter.Customer.Meal == false
-                        ? new WaiterExecute(new Time().ExponentialDistribution(80), Waiter, QueueWaiter, QueueCashier, Tables, EventList, Clock)
-                        : new WaiterExecute(new Time().ExponentialDistribution(160), Waiter, QueueWaiter, QueueCashier, Tables, EventList, Clock);
+                        ? new WaiterExecute(new Time().ExponentialDistribution(50), Waiter, QueueWaiter, QueueCashier, Tables, EventList, Clock)
+                        : new WaiterExecute(new Time().ExponentialDistribution(100), Waiter, QueueWaiter, QueueCashier, Tables, EventList, Clock);
                     EventList.Add(Obj);
                     return true;
                 }

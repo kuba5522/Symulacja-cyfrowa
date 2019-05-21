@@ -5,15 +5,15 @@ namespace Restauracja
     {
         private static readonly Random Random = new Random();
         private const double Probability1 = 0.10;
-        private const double Probability2 = 0.30;
+        private const double Probability2 = 0.35;
         private const double Probability3 = 0.35;
-        private const double Probability4 = 0.25;
+        private const double Probability4 = 0.20;
         public Customer()
         {
             GroupSize = QuantityOfGroup();
             Id = Guid.NewGuid();
             Meal = false;
-            Choice = Random.Next(0,2)>0;
+            Choice = Convert.ToBoolean(new Time().UniformDistribution(0,1));
         }
 
         private static int QuantityOfGroup()

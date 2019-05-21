@@ -13,7 +13,7 @@ namespace Restauracja
         private const int NumberOfTables = N2 + N3 + N4;
         private const int CapacityBuffet = 20;
         private const int NumberOfCashiers = 6;
-        private const int NumberOfWaiters = 6;
+        private const int NumberOfWaiters = 5;
         public static int NumberOfGroups { get; set; }
 
         public static Manager Menager { get; set; } = new Manager();
