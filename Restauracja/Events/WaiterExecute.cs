@@ -12,7 +12,8 @@ namespace Restauracja
         private readonly Queue<Customer> QueueCashier; 
         private readonly List<Table> Tables;
 
-        public WaiterExecute(int executeTime, Waiter waiter, Queue<Customer> queueWaiter, Queue<Customer> queueCashier, List<Table> tables, List<Event> events, int clock) : base(clock, executeTime)
+        public WaiterExecute(int executeTime, Waiter waiter, Queue<Customer> queueWaiter, Queue<Customer> queueCashier,
+            List<Table> tables, List<Event> events, int clock, Guid customerId) : base(clock, executeTime, customerId)
         {
             Waiter = waiter;
             QueueWaiter = queueWaiter;
@@ -26,16 +27,16 @@ namespace Restauracja
         {
             if (Waiter.Customer.Meal)
             {
-                var Obj = new MealExecute(new Time().ExponentialDistribution(2020), Waiter, QueueCashier, Tables, Param.Clock );
+                var Obj = new MealExecute(new Time(ConditionalEvents.Mersenne.Random()).ExponentialDistribution(2020), Waiter.Customer, QueueCashier, Tables, Param.Clock );
                 Events.Add(Obj);
             }
             else
             {
                 Waiter.Customer.Meal = true;
                 QueueWaiter.Enqueue(Waiter.Customer);
-                Waiter.Customer = null;
 
             }
+            Waiter.Customer = null;
             Console.WriteLine("Zakonczenie obsługi kelnera");
         }
     }

@@ -15,7 +15,7 @@ namespace Restauracja
         private const int NumberOfCashiers = 6;
         private const int NumberOfWaiters = 5;
         public static int NumberOfGroups { get; set; }
-
+        public static uint Seed { get; set; }
         public static Manager Menager { get; set; } = new Manager();
 
         public static List<Waiter> Waiters { get; set; } = new List<Waiter>();
@@ -43,6 +43,21 @@ namespace Restauracja
             NumberOfGroups = 0;
         }
 
+        public static void Clear()
+        {
+            QueueTable.Clear();
+            QueueBuffet.Clear();
+            QueueCashier.Clear();
+            QueueWaiter.Clear();
+            Tables.Clear();
+            Waiters.Clear();
+            Cashiers.Clear();
+            Buffet.Clear();
+            EventList.Clear();
+            PastEventList.Clear();
+            Menager.Customer = null;
+            Initialization();
+        }
         private static void AddToList<T>(ICollection<T> objects, int number=1) where T : new()
         {
             for (int I = 0; I < number; I++)
@@ -102,7 +117,7 @@ namespace Restauracja
             Console.WriteLine("Ilośc miejsc w stolikach: 2os:"+x+"/"+N2+" 3os:"+y+"/"+N3+" 4os:"+z+"/"+N4);
             Console.WriteLine("Ilośc osób w bufecie "+ n+"/"+CapacityBuffet);
             Console.WriteLine("Ilośc zajetych kelnerow:"+m+"/"+NumberOfWaiters);
-            Console.WriteLine("Ilośc zajetych kelnerow:" + p + "/" + NumberOfCashiers);
+            Console.WriteLine("Ilośc zajetych kasjerów:" + p + "/" + NumberOfCashiers);
         }
     }
 }

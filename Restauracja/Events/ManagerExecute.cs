@@ -9,13 +9,12 @@ namespace Restauracja
     public class ManagerExecute:Event
     {
         private readonly Customer Customer;
-        private readonly Table Table;
         private readonly Queue<Customer> QueueWaiter;
         private readonly Manager Manager;
 
-        public ManagerExecute(int executeTime, Customer customer, Table table, Queue<Customer> queueWaiter, Manager manager, int clock) : base(clock, executeTime)
+        public ManagerExecute(int executeTime, Customer customer, Queue<Customer> queueWaiter,
+            Manager manager, int clock, Guid customerId) : base(clock, executeTime, customerId)
         {
-            Table = table;
             QueueWaiter = queueWaiter;
             Manager = manager;
             ExecuteTime = executeTime+clock;
@@ -24,7 +23,6 @@ namespace Restauracja
 
         public override void Execute()
         {
-            Table.Customer = Customer;
             QueueWaiter.Enqueue(Customer);
             Manager.Customer = null;
             Console.WriteLine("Zakonczenie prowadzenia przez menagera");

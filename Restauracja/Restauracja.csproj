@@ -71,6 +71,7 @@
     <Compile Include="Events\BuffetExecute.cs" />
     <Compile Include="Events\CashierExecute.cs" />
     <Compile Include="Events\MealExecute.cs" />
+    <Compile Include="Events\Mersenne.cs" />
     <Compile Include="Events\NewGroup.cs" />
     <Compile Include="Events\Time.cs" />
     <Compile Include="Events\WaiterExecute.cs" />
