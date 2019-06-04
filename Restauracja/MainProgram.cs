@@ -10,7 +10,7 @@ namespace Restauracja
         public static void Main()
         {
             /////////////Simulation parameters/////////////
-            const int numberOfSimulations = 1;
+            const int numberOfSimulations = 2;
             const int numberOfCustomerReceptions = 3000;
             const bool stepMode = false;
             const bool toExcel = false;
@@ -54,6 +54,7 @@ namespace Restauracja
                     Console.WriteLine("\nLiczba eventow czasowych: " + Param.EventList.Count);
                     foreach (var Event in Param.EventList)
                         Console.Write("|" + Event.ExecuteTime + "| ");
+                    Console.WriteLine();
                     Console.WriteLine("____________________________________________________________________");
                     if (stepMode)
                         Console.ReadLine();
