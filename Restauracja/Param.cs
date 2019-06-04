@@ -14,6 +14,9 @@ namespace Restauracja
         private const int CapacityBuffet = 20;
         private const int NumberOfCashiers = 6;
         private const int NumberOfWaiters = 5;
+
+        public static bool includeInitialPhase { get; set; }
+
         public static int NumberOfGroups { get; set; }
         public static uint Seed { get; set; }
         public static Manager Menager { get; set; } = new Manager();

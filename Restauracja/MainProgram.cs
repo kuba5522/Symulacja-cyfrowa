@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 
 
 namespace Restauracja
@@ -10,51 +9,51 @@ namespace Restauracja
     {
         public static void Main()
         {
-            /////////////Parametry symulacji/////////////
+            /////////////Simulation parameters/////////////
             const int numberOfSimulations = 1;
-            const int numberOfCustomerReceptions = 4000;
+            const int numberOfCustomerReceptions = 3000;
             const bool stepMode = false;
-            const bool toExcel = true;
-            const bool includeInitialPhase = true;
+            const bool toExcel = false;
+            Param.includeInitialPhase = false;
             /////////////////////////////////////////////
             Param.Initialization();
-            int y = 0;
+            var y = 0;
             for (var i = 0; i < numberOfSimulations; i++)
             {
-                 var NewGroupArrival = new NewGroup(0, Param.QueueTable, Param.QueueBuffet, Param.EventList, Param.Clock,
-                   new Customer(ConditionalEvents.Mersenne.Random(), ConditionalEvents.Mersenne.Random()));              //A
+                var NewGroupArrival = new NewGroup(0, Param.QueueTable, Param.QueueBuffet, Param.EventList, Param.Clock, new Customer(ConditionalEvents.Mersenne.Random(), ConditionalEvents.Mersenne.Random()));
                 Param.EventList.Add(NewGroupArrival);
-                int[] QueueToTable = new int[100 * numberOfCustomerReceptions];
-                int[] QueueToCashier = new int[100 * numberOfCustomerReceptions];
+                var Sum1 = 0;                                                                                                                   //A, initiation by adding the first event
+                var Sum2 = 0;
+                var n = 0;
                 var k = 1;
-                var Excel = new Excel(AppDomain.CurrentDomain.BaseDirectory + "sym6.xlsx", 1);
-                while (Param.NumberOfGroups <= numberOfCustomerReceptions)
+                var Excel = new Excel(AppDomain.CurrentDomain.BaseDirectory + "test.xlsx", i+1);        //FILE WITH THIS NAME AND MAX NUMBERS OF SHEETS MUST EXIST BEFORE THE SIMULATION STARTS IN 
+                                                                                                                  //../Restauracja\bin\Debug     FOLDER
+
+                while (Param.NumberOfGroups <= numberOfCustomerReceptions)                  //Main simulation loop  
                 {
-                    Param.Clock = Param.EventList.Min(r => r.ExecuteTime);                                                                       //B
+                    Param.Clock = Param.EventList.Min(r => r.ExecuteTime);                                                                       //B, execution of the earliest event/events
                     Param.EventList.Where(time => time.ExecuteTime.Equals(Param.Clock)).ToList()
                         .ForEach(obj => obj.Executing());
                     Param.EventList.RemoveAll(time => time.ExecuteTime == Param.Clock);
-                    bool x;
+
+                    bool X;
                     do
                     {
-                        x = ConditionalEvents.ExecuteConditionalEvents();                                                                     //C
-                    } while (x);
+                        X = ConditionalEvents.ExecuteConditionalEvents();                                                                     //C, execution of all ConditionalEvents
+                    } while (X);
 
                     
-                    if (!includeInitialPhase && Param.NumberOfGroups<1100) continue;                //wyznaczone doświadczalnie
-                    //wyświetlanie////////////////////////////////////
+                    if (!Param.includeInitialPhase && Param.NumberOfGroups<1100) continue;                //determined experimentally
+                    /////////////////displaying/////////////////
                     Console.WriteLine();
-                    QueueToTable[k] = Param.QueueTable.Count;
-                    QueueToCashier[k] = Param.QueueCashier.Count;
+                    Sum1 += Param.QueueTable.Count;
+                    Sum2 += Param.QueueCashier.Count;
+                    n++;
                     Param.ShowCustomersInQueues();
                     Param.ShowObjInLists();
                     Console.WriteLine("\nLiczba eventow czasowych: " + Param.EventList.Count);
                     foreach (var Event in Param.EventList)
-                    {
                         Console.Write("|" + Event.ExecuteTime + "| ");
-                    }
-
-                    Console.WriteLine();
                     Console.WriteLine("____________________________________________________________________");
                     if (stepMode)
                         Console.ReadLine();
@@ -65,28 +64,32 @@ namespace Restauracja
                         Excel.WriteToCell(k, 3, Param.QueueWaiter.Count.ToString());
                         Excel.WriteToCell(k++, 4, Param.QueueCashier.Count.ToString());
                     }
-
-                    
                 }
-                QueueToTable[k] = -1;
-                QueueToCashier[k] = -1;
 
-                
-                Excel.WriteToCell(++y, 6, AverageWaitingTimeForATable(numberOfCustomerReceptions).ToString());
-                Excel.WriteToCell(y, 7, AverageQueueLengthWaitingForATable(QueueToTable).ToString());
-                Excel.WriteToCell(y, 8, AverageWaitTimeForWaiterService(numberOfCustomerReceptions).ToString());
-                Excel.WriteToCell(y, 9, AverageQueueLengthToCashier(QueueToCashier).ToString());
-                /*
-                Console.WriteLine("Sredni czas oczekiwania na stolik: " + AverageWaitingTimeForATable(numberOfCustomerReceptions));
+                var Result1 = AverageWaitingTimeForATable();
+                var Result2 = AverageQueueLength(Sum1, n);
+                var Result3 = AverageWaitTimeForWaiterServices();
+                var Result4 = AverageQueueLength(Sum2, n);
 
-                Console.WriteLine("Średnia długość kolejki do stolików: "+ AverageQueueLengthWaitingForATable(QueueToTable));
+                if (toExcel)
+                {
+                    Excel.WriteToCell(++y, 6, Result1.ToString(CultureInfo.InvariantCulture));
+                    Excel.WriteToCell(y, 7, Result2.ToString(CultureInfo.InvariantCulture));
+                    Excel.WriteToCell(y, 8, Result3.ToString(CultureInfo.InvariantCulture));
+                    Excel.WriteToCell(y, 9, Result4.ToString(CultureInfo.InvariantCulture));
+                }
+
+                Console.WriteLine("Sredni czas oczekiwania na stolik: " + Result1);
+
+                Console.WriteLine("Średnia długość kolejki do stolików: " + Result2);
             
-                Console.WriteLine("Średi czas oczekiwania na obsługę przez kelnera:  "+AverageWaitTimeForWaiterService(numberOfCustomerReceptions));
+                Console.WriteLine("Średi czas oczekiwania na obsługę przez kelnera:  " + Result3);
                 
-                Console.WriteLine("Średnia długość kolejki do kasjerów: " + AverageQueueLengthToCashier(QueueToCashier));
-                */
-                //Excel.Close();
-                //Console.ReadLine();
+                Console.WriteLine("Średnia długość kolejki do kasjerów: " + Result4);
+                
+
+                Excel.Close();
+                Console.ReadLine();
                 Param.Clear();
             }
         }
@@ -95,10 +98,8 @@ namespace Restauracja
 
         //funkcje zwracające wyniki symulacji
 
-        private static double AverageWaitingTimeForATable(int numberOfCustomerReceptions)
+        private static double AverageWaitingTimeForATable()
         {
-            int[] Tab = new int[10*numberOfCustomerReceptions];
-            int h = 0;
             int Sum = 0;
             int n = 0;
             for (int j = 0; j < Param.PastEventList.Count; j++)
@@ -109,37 +110,25 @@ namespace Restauracja
                     {
                         if (Param.PastEventList[l].Id == Param.PastEventList[j].Id && Param.PastEventList[l].GetType() == typeof(ManagerExecute))
                         {
-                            Tab[h++] = Param.PastEventList[l].StartTime - Param.PastEventList[j].ExecuteTime;
+                            Sum += Param.PastEventList[l].StartTime - Param.PastEventList[j].ExecuteTime;
+                            n++;
                             break;
 
                         }
                     }
                 }
-                Tab[h] = -1;
+                
             }
-
-            while (Tab[n] != -1)
-                Sum += Tab[n++];
-            
-
             return (double)Sum / n;
-            
         }
 
-        private static double AverageQueueLengthWaitingForATable(IReadOnlyList<int> queueToTable)
+        private static double AverageQueueLength(int sum, int n)
         {
-            int n = 0;
-            int Sum = 0;
-            while (queueToTable[n] != -1)
-                Sum += queueToTable[n++];
-
-            return (double) Sum / n;
+            return (double) sum / n;
         }
 
-        private static double AverageWaitTimeForWaiterService(int numberOfCustomerReceptions)
+        private static double AverageWaitTimeForWaiterServices()
         {
-            int[] Tab1 = new int[10 * numberOfCustomerReceptions];
-            int h = 0;
             int Sum = 0;
             int n = 0;
             for (int j = 0; j < Param.PastEventList.Count; j++)
@@ -150,7 +139,8 @@ namespace Restauracja
                     {
                         if (Param.PastEventList[l].Id == Param.PastEventList[j].Id && Param.PastEventList[l].GetType() == typeof(WaiterExecute))
                         {
-                            Tab1[h++] = Param.PastEventList[l].StartTime - Param.PastEventList[j].ExecuteTime;
+                            Sum += Param.PastEventList[l].StartTime - Param.PastEventList[j].ExecuteTime;
+                            n++;
                             break;
 
                         }
@@ -162,28 +152,15 @@ namespace Restauracja
                     {
                         if (Param.PastEventList[l].Id == Param.PastEventList[j].Id && Param.PastEventList[l].GetType() == typeof(WaiterExecute))
                         {
-                            Tab1[h++] = Param.PastEventList[j].ExecuteTime - Param.PastEventList[l].StartTime;
-                            Param.PastEventList.RemoveAt(l); Param.PastEventList.RemoveAt(j);
+                            Sum += Param.PastEventList[j].ExecuteTime - Param.PastEventList[l].StartTime;
+                            n++;
                             break;
 
                         }
                     }
                 }
-                Tab1[h] = -1;
+                
             }
-            while (Tab1[n] != -1)
-                Sum += Tab1[n++];
-
-            return (double) Sum / n;
-        }
-
-        private static double AverageQueueLengthToCashier(IReadOnlyList<int> queueToCashier)
-        {
-            int n = 0;
-            int Sum = 0;
-            while (queueToCashier[n] != -1)
-                Sum += queueToCashier[n++];
-
             return (double) Sum / n;
         }
     }

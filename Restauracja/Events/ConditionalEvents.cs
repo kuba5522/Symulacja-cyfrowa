@@ -5,7 +5,7 @@ namespace Restauracja
     
     public class ConditionalEvents: Param
     {
-        public static readonly Mersenne Mersenne = new Mersenne(1235);
+        public static readonly Mersenne Mersenne = new Mersenne(Convert.ToUInt32(new Random().Next(999999999)));
         public static bool ExecuteConditionalEvents()
         {
             return ( GroupAssignmentToTables() || AllocationToBuffet() || WaiterAssignment() || CashierAssignment());
@@ -88,5 +88,8 @@ namespace Restauracja
             }
             return false;
         }
+
+
+      
     }
 }

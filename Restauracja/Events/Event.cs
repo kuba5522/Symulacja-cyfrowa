@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
 
 namespace Restauracja
 {
@@ -28,8 +26,11 @@ namespace Restauracja
         public virtual void Executing()
         {
             Execute();
-            //if(Param.NumberOfGroups > 1100)
-                Param.PastEventList.Add(this);
+            if (Param.includeInitialPhase)
+                    Param.PastEventList.Add(this);
+            else
+                if (Param.NumberOfGroups > 1100)
+                    Param.PastEventList.Add(this);
         }
     }
 }

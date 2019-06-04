@@ -20,7 +20,7 @@ namespace Restauracja
 
         
         public Mersenne(uint seed)
-        {       // constructor
+        {
             RandomInit(seed);
         }
         public void RandomInit(uint seed)
