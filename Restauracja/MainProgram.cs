@@ -10,8 +10,8 @@ namespace Restauracja
         public static void Main()
         {
             /////////////Simulation parameters/////////////
-            const int numberOfSimulations = 2;
-            const int numberOfCustomerReceptions = 3000;
+            const int numberOfSimulations = 1;
+            const int numberOfCustomerReceptions = 5000;
             const bool stepMode = false;
             const bool toExcel = false;
             Param.includeInitialPhase = false;
@@ -43,7 +43,7 @@ namespace Restauracja
                     } while (X);
 
                     
-                    if (!Param.includeInitialPhase && Param.NumberOfGroups<1100) continue;                //determined experimentally
+                    if (!Param.includeInitialPhase && Param.NumberOfGroups<1400) continue;                //determined experimentally
                     /////////////////displaying/////////////////
                     Console.WriteLine();
                     Sum1 += Param.QueueTable.Count;
@@ -58,7 +58,7 @@ namespace Restauracja
                     Console.WriteLine("____________________________________________________________________");
                     if (stepMode)
                         Console.ReadLine();
-                    if (toExcel && Param.NumberOfGroups % 10 == 0)
+                    if (toExcel && Param.NumberOfGroups % 20 == 0)
                     {
                         Excel.WriteToCell(k, 1, Param.QueueTable.Count.ToString());
                         Excel.WriteToCell(k, 2, Param.QueueBuffet.Count.ToString());
@@ -90,7 +90,7 @@ namespace Restauracja
                 
 
                 Excel.Close();
-                Console.ReadLine();
+                //Console.ReadLine();
                 Param.Clear();
             }
         }

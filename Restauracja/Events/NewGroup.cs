@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows.Media.Animation;
 
 namespace Restauracja
 {
@@ -22,7 +21,7 @@ namespace Restauracja
                 QueueBuffet.Enqueue(Customer);
             
             Console.WriteLine("Zaplanowanie pojawienia się następnej grupy");
-            var Group = new NewGroup(new Time(ConditionalEvents.Mersenne.Random()).GaussianDistribution(200, 20), QueueTable, QueueBuffet, Events, Param.Clock,
+            var Group = new NewGroup(new Time(ConditionalEvents.Mersenne.Random()).GaussianDistribution(205, 10), QueueTable, QueueBuffet, Events, Param.Clock,
                 new Customer(ConditionalEvents.Mersenne.Random(), ConditionalEvents.Mersenne.Random()));
             Events.Add(Group);
 

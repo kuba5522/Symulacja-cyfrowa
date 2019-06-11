@@ -66,7 +66,7 @@ namespace Restauracja
                     Console.WriteLine("Przydzielenie grupy do kelnera");
                     var Obj = Waiter.Customer.Meal == false
                         ? new WaiterExecute(new Time(Mersenne.Random()).ExponentialDistribution(270), Waiter, QueueWaiter, QueueCashier, Tables, EventList, Clock, Waiter.Customer.Id)
-                        : new WaiterExecute(new Time(Mersenne.Random()).ExponentialDistribution(1780), Waiter, QueueWaiter, QueueCashier, Tables, EventList, Clock, Waiter.Customer.Id);
+                        : new WaiterExecute(new Time(Mersenne.Random()).ExponentialDistribution(1750), Waiter, QueueWaiter, QueueCashier, Tables, EventList, Clock, Waiter.Customer.Id);
                     EventList.Add(Obj);
                     return true;
                 }

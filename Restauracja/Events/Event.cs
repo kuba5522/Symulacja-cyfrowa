@@ -29,7 +29,7 @@ namespace Restauracja
             if (Param.includeInitialPhase)
                     Param.PastEventList.Add(this);
             else
-                if (Param.NumberOfGroups > 1100)
+                if (Param.NumberOfGroups > 1400)
                     Param.PastEventList.Add(this);
         }
     }
